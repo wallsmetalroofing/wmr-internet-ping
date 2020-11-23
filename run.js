@@ -23,7 +23,7 @@ setInterval(async () => {
         try {
 
             const result = await ping.promise.probe(host, {
-                timeout: 450
+                timeout: 0.450
             });
 
             line += chalk.blue.bold(host) + chalk.grey(" - ") + chalk.green(result.time + "ms");
