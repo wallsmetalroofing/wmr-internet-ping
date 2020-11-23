@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const ping = require('ping');
 const chalk = require("chalk");
 
