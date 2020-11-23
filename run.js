@@ -26,6 +26,10 @@ setInterval(async () => {
                 timeout: 0.450
             });
 
+            if (!result.alive) {
+                throw new Error("Down");
+            }
+
             line += chalk.blue.bold(host) + chalk.grey(" - ") + chalk.green(result.time + "ms");
 
             if (outages[host]) {
