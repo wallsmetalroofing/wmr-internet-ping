@@ -16,22 +16,17 @@ console.log("");
 
 setInterval(async () => {
 
-    let line = "";
-
-
-    for (const host of hosts) {
-
+    const results = await Promise.all(hosts.map(async host => {
         try {
 
             const result = await ping.promise.probe(host, {
-                timeout: 0.450
+                timeout: 0.8
             });
 
             if (!result.alive) {
                 throw new Error("Down");
             }
 
-            line += chalk.blue.bold(host) + chalk.grey(" - ") + chalk.green(result.time + "ms");
 
             if (outages[host]) {
                 // calculate the outage time
@@ -42,20 +37,19 @@ setInterval(async () => {
                 outages[host] = null;
             }
 
+            return chalk.blue.bold(host) + chalk.grey(" - ") + chalk.green(result.time + "ms");
+
         } catch (err) {
             // ping failed
             if (!outages[host]) {
                 outages[host] = new Date();
             }
 
-            line += chalk.blue.bold(host) + chalk.grey(" - ") + chalk.red("Outage Started") + chalk.grey(" - ") + chalk.red(outages[host].toLocaleTimeString());
-
+            return chalk.blue.bold(host) + chalk.grey(" - ") + chalk.red("Outage Started") + chalk.grey(" - ") + chalk.red(outages[host].toLocaleTimeString());
         }
-
-        line += "  ";
-    }
+    }));
 
     process.stdout.clearLine();
     process.stdout.cursorTo(0);
-    process.stdout.write(line);
+    process.stdout.write(results.join(" | "));
 }, 1000);
