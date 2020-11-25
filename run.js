@@ -3,7 +3,8 @@
 const ping = require('ping');
 const chalk = require("chalk");
 
-const hosts = ['1.1.1.1', '8.8.8.8'];
+const myArgs = process.argv.slice(2);
+const hosts = myArgs.length ? myArgs : ['1.1.1.1', '8.8.8.8'];
 /**
  * @type {{[key: string]: Date}}
  */
