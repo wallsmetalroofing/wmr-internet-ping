@@ -1,1 +1,5 @@
 /node_modules
+
+run-win.exe
+run-linux
+run-macos
